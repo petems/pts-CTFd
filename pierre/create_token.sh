@@ -1,0 +1,2 @@
+echo "INSERT INTO ctfd.users (name, password, email, type, hidden, banned, verified, created) VALUES ('admin', '\$bcrypt-sha256\$v=2,t=2b,r=12\$8AvrDQdKz74chdPoPR/YZu\$mEyF7/Rky2LgFXdJXu/YhC4N9TEU2Wi', 'dpnworkshop+ctfd@datadoghq.com', 'admin', 1, 0, 0, CURDATE());" | mysql -u ctfd -pctfd
+echo "INSERT INTO ctfd.tokens (type,user_id, created, expiration, value, description) VALUES ('user', 1, CURDATE(), ADDDATE(CURDATE(), 120 ), 'ctfd_cc4e16169552d505c12c8aa41e2249928458569327a5364017bc5c1e707abe0f', 'Auto-generated token for Cthulhu');" | mysql -u ctfd -pctfd
