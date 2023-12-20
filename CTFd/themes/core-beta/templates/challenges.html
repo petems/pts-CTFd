@@ -34,13 +34,15 @@
         </div>
       </div>
 
-      <div class="pt-2 alert alert-primary">
-        <h3>You will need some credentials on the way. Here, take these:</h3>
-        {% for field in team.fields %}
-          <h5 class="d-block">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Here take these credentials:</h5>
+          {% for field in team.fields %}
+          <p class="card-text">
             {{ field.name }}: {{ field.value }}
-          </h5>
-        {% endfor %}
+          </p>
+          {% endfor %}
+        </div>
       </div>
 
       <div x-show="loaded">
