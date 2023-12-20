@@ -37,11 +37,13 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Here take these credentials:</h5>
+
           {% for field in team.fields %}
           <p class="card-text">
             {{ field.name }}: {{ field.value }}
           </p>
           {% endfor %}
+          
         </div>
       </div>
 
