@@ -56,16 +56,16 @@
 									<a class="btn btn-info btn-hint btn-block load-hint" href="javascript:;" data-hint-id="{{ hint.id }}">
 										{% if hint.content %}
 											<small>
-												View Hint
+												힌트 보기
 											</small>
 										{% else %}
 											{% if hint.cost %}
 												<small>
-													Unlock Hint for {{ hint.cost }} points
+													{{ hint.cost }} 포인트로 힌트 열기!
 												</small>
 											{% else %}
 												<small>
-													View Hint
+													힌트 포기
 												</small>
 											{% endif %}
 										{% endif %}

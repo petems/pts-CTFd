@@ -70,12 +70,12 @@
                   <div x-data="Hint" x-init="id = {{ hint.id }}">
                     {% if hint.content %}
                     <details>
-                      <summary>{% trans %}View Hint{% endtrans %}</summary>
+                      <summary>{% trans %}힌트 보기{% endtrans %}</summary>
                       <div>{{ hint.html | safe }}</div>
                     </details>
                     {% else %}
                     <details @toggle="showHint(event)">
-                      <summary>Unlock Hint for {{ hint.cost }} point{{ hint.cost|pluralize }}</summary>
+                      <summary>{{ hint.cost }} 포인트로 힌트 열기!{{ hint.cost|pluralize }}</summary>
                       <div x-html="html"></div>
                     </details>
                     {% endif %}
