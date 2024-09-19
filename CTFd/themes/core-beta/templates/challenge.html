@@ -75,7 +75,7 @@
                     </details>
                     {% else %}
                     <details @toggle="showHint(event)">
-                      <summary>{{ hint.cost }} 포인트로 힌트 열기!{{ hint.cost|pluralize }}</summary>
+                      <summary>{{ hint.cost }} 포인트로 힌트 열기!</summary>
                       <div x-html="html"></div>
                     </details>
                     {% endif %}
