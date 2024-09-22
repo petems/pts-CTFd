@@ -1,9 +1,9 @@
 import time, os
 import requests, json 
 
-SLEEP_INTERVAL = 60 # how long does our script sleep in between iterations. For production use, it should be like 60 seconds or so
-INVITATION_TIME_MINUTES = 5 # how many minutes (!) before the event starts should we start inviting the users?
-INVITATION_CUTOFF_MINUTES = 15 # how many minutes after we started the event should we stop inviting new users?
+SLEEP_INTERVAL = 30 # how long does our script sleep in between iterations. For production use, it should be like 60 seconds or so
+INVITATION_TIME_MINUTES = 10 # how many minutes (!) before the event starts should we start inviting the users?
+INVITATION_CUTOFF_MINUTES = 30 # how many minutes after we started the event should we stop inviting new users?
 CTFD_HOST = "http://ctfd" # we default to the container name for our standard deployment
 
 if os.getenv('CTFD_HOST') is not None: 
