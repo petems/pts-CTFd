@@ -181,8 +181,9 @@ def get_locale():
         user = get_current_user_attrs()
         if user.language:
             return user.language
-    languages = Languages.values()
-    return request.accept_languages.best_match(languages)
+    return request.accept_languages.best_match(Languages.values(), default='ko')
+    #languages = Languages.values()
+    #return request.accept_languages.best_match(languages)
 
 
 def get_current_user_recent_ips():
