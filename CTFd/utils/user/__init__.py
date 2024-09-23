@@ -180,9 +180,9 @@ def get_locale():
     if authed():
         user = get_current_user_attrs()
         if user.language:
-            return user.language
-    # Return the default locale specified in the configuration
-    return app.config.get('BABEL_DEFAULT_LOCALE', 'en')
+            return 'ko'
+    # Korean enforced
+    return 'ko'
     #languages = Languages.values()
     #return request.accept_languages.best_match(languages)
 
