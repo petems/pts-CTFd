@@ -282,7 +282,7 @@ msgstr "Powered by CTFd"
 #: CTFd/themes/core-beta/templates/users/private.html:114
 #: CTFd/themes/core-beta/templates/users/public.html:113
 msgid "Challenge"
-msgstr "챌린지"
+msgstr "퀘스트"
 
 #: CTFd/themes/core-beta/templates/challenge.html:19
 msgid "%(num)d Solve"
@@ -299,7 +299,7 @@ msgstr "플래그"
 
 #: CTFd/themes/core-beta/templates/challenge.html:167
 msgid "Next Challenge"
-msgstr "다음 챌린지"
+msgstr "다음 퀘스트"
 
 #: CTFd/themes/core-beta/templates/challenge.html:186
 #: CTFd/themes/core-beta/templates/setup.html:305
@@ -310,7 +310,7 @@ msgstr "날짜"
 #: CTFd/themes/core-beta/templates/challenges.html:7
 #: CTFd/themes/core-beta/templates/components/navbar.html:57
 msgid "Challenges"
-msgstr "챌린지"
+msgstr "퀘스트"
 
 #: CTFd/themes/core-beta/templates/confirm.html:7
 msgid "Confirm"
