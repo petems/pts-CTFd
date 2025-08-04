@@ -1,6 +1,6 @@
 lint:
 	ruff check --select E,F,W,B,C4,I --ignore E402,E501,E712,B904,B905 --exclude=CTFd/uploads CTFd/ migrations/ tests/
-	yarn lint
+	npm run lint
 	black --check --diff --exclude=CTFd/uploads --exclude=node_modules .
 	prettier --check 'CTFd/themes/**/assets/**/*'
 	prettier --check '**/*.md'
@@ -20,7 +20,7 @@ test:
 		-n auto
 	bandit -r CTFd -x CTFd/uploads --skip B105,B322
 	pipdeptree
-	yarn verify
+	npm run verify
 
 coverage:
 	coverage html --show-contexts
