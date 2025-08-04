@@ -6,53 +6,38 @@ from freezegun import freeze_time
 from CTFd.models import Challenges, Flags, Hints, Solves, Tags, Users
 from CTFd.utils import set_config
 from tests.helpers import (
-    create_ctfd,
-    destroy_ctfd,
-    gen_challenge,
     gen_fail,
-    gen_flag,
-    gen_hint,
     gen_solve,
     gen_tag,
-    gen_team,
     gen_topic,
-    gen_user,
     login_as_user,
     register_user,
 )
 
 
-def test_api_challenges_get_visibility_public():
+def test_api_challenges_get_visibility_public(app, client):
     """Can a public user get /api/v1/challenges if challenge_visibility is private/public"""
-    app = create_ctfd()
-    with app.app_context():
-        set_config("challenge_visibility", "public")
-        with app.test_client() as client:
-            r = client.get("/api/v1/challenges")
-            assert r.status_code == 200
-            set_config("challenge_visibility", "private")
-            r = client.get("/api/v1/challenges", json="")
-            assert r.status_code == 403
-    destroy_ctfd(app)
+    set_config("challenge_visibility", "public")
+    r = client.get("/api/v1/challenges")
+    assert r.status_code == 200
+    
+    set_config("challenge_visibility", "private")
+    r = client.get("/api/v1/challenges", json="")
+    assert r.status_code == 403
 
 
-def test_api_challenges_get_ctftime_public():
+def test_api_challenges_get_ctftime_public(app, client):
     """Can a public user get /api/v1/challenges if ctftime is over"""
-    app = create_ctfd()
-    with app.app_context(), freeze_time("2017-10-7"):
+    with freeze_time("2017-10-7"):
         set_config("challenge_visibility", "public")
-        with app.test_client() as client:
-            r = client.get("/api/v1/challenges")
-            assert r.status_code == 200
-            set_config(
-                "start", "1507089600"
-            )  # Wednesday, October 4, 2017 12:00:00 AM GMT-04:00 DST
-            set_config(
-                "end", "1507262400"
-            )  # Friday, October 6, 2017 12:00:00 AM GMT-04:00 DST
-            r = client.get("/api/v1/challenges")
-            assert r.status_code == 403
-    destroy_ctfd(app)
+        r = client.get("/api/v1/challenges")
+        assert r.status_code == 200
+        
+        set_config("start", "1507089600")  # Wednesday, October 4, 2017 12:00:00 AM GMT-04:00 DST
+        set_config("end", "1507262400")    # Friday, October 6, 2017 12:00:00 AM GMT-04:00 DST
+        
+        r = client.get("/api/v1/challenges")
+        assert r.status_code == 403
 
 
 def test_api_challenges_get_visibility_private():
@@ -110,14 +95,26 @@ def test_api_challenges_get_verified_emails():
     destroy_ctfd(app)
 
 
-def test_api_challenges_post_non_admin():
+def test_api_challenges_post_non_admin(app, client, user_factory):
     """Can a user post /api/v1/challenges if not admin"""
-    app = create_ctfd()
-    with app.app_context():
-        with app.test_client() as client:
-            r = client.post("/api/v1/challenges", json="")
-            assert r.status_code == 403
-    destroy_ctfd(app)
+    user = user_factory()
+    
+    with client.session_transaction() as sess:
+        sess["id"] = user.id
+        sess["nonce"] = "fake-nonce"
+        sess["hash"] = "fake-hash"
+    
+    challenge_data = {
+        "name": "name",
+        "category": "category", 
+        "description": "description",
+        "value": 100,
+        "state": "hidden",
+        "type": "standard",
+    }
+    
+    r = client.post("/api/v1/challenges", json=challenge_data)
+    assert r.status_code == 403
 
 
 def test_api_challenges_get_admin():
@@ -407,24 +404,52 @@ def test_api_challenges_get_solve_count_banned_user():
     destroy_ctfd(app)
 
 
-def test_api_challenges_post_admin():
+def test_api_challenges_post_admin(app, admin_client):
     """Can a user post /api/v1/challenges if admin"""
-    app = create_ctfd()
-    with app.app_context():
-        with login_as_user(app, "admin") as client:
-            r = client.post(
-                "/api/v1/challenges",
-                json={
-                    "name": "chal",
-                    "category": "cate",
-                    "description": "desc",
-                    "value": "100",
-                    "state": "hidden",
-                    "type": "standard",
-                },
-            )
-            assert r.status_code == 200
-    destroy_ctfd(app)
+    challenge_data = {
+        "name": "chal",
+        "category": "cate",
+        "description": "desc", 
+        "value": "100",
+        "state": "hidden",
+        "type": "standard",
+    }
+    
+    r = admin_client.post("/api/v1/challenges", json=challenge_data)
+    assert r.status_code == 200
+
+
+def test_api_challenges_get_logged_in(app, admin_client, challenge_factory, flag_factory):
+    """Can a logged in user get /api/v1/challenges with fixtures"""
+    chal = challenge_factory()
+    flag_factory(challenge_id=chal.id, content="flag")
+    
+    r = admin_client.get("/api/v1/challenges")
+    assert r.status_code == 200
+    data = r.get_json()["data"]
+    assert len(data) == 1
+
+
+def test_api_challenges_attempt_submission(app, client, challenge_factory, flag_factory, user_factory):
+    """Test challenge submission with proper fixture usage"""
+    user = user_factory()
+    chal = challenge_factory()
+    flag = flag_factory(challenge_id=chal.id, content="correct_flag")
+    
+    # Login user
+    with client.session_transaction() as sess:
+        sess["id"] = user.id
+        sess["nonce"] = "fake-nonce"
+        sess["hash"] = "fake-hash"
+    
+    # Submit correct flag
+    r = client.post(f"/api/v1/challenges/{chal.id}/attempts", json={"submission": "correct_flag"})
+    assert r.status_code == 200
+    data = r.get_json()["data"]
+    assert data["status"] == "correct"
+    
+    # Verify solve was recorded
+    assert Solves.query.filter_by(user_id=user.id, challenge_id=chal.id).count() == 1
 
 
 def test_api_challenge_types_post_non_admin():
