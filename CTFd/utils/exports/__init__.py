@@ -311,7 +311,7 @@ def import_ctf(backup, erase=True):
                                     try:
                                         is_dt_column = isinstance(
                                             getattr(direct_table, k).type,
-                                            sqltypes.DateTime
+                                            sqltypes.DateTime,
                                         )
                                     except AttributeError:
                                         is_dt_column = False
