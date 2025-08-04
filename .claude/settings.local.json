@@ -9,7 +9,10 @@
       "Bash(corepack enable)",
       "Bash(find:*)",
       "Bash(npx eslint:*)",
-      "Bash(ruff check:*)"
+      "Bash(ruff check:*)",
+      "Bash(pytest:*)",
+      "Bash(grep:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }
