@@ -10,7 +10,6 @@ This file replaces the original admin fields test with:
 4. Parametrized tests for different field configurations
 """
 
-import pytest
 from CTFd.models import Users
 from tests.helpers import (
     gen_field,

@@ -9,7 +9,6 @@ This file replaces the original admin challenges test with:
 3. Better test isolation and cleanup
 """
 
-import pytest
 from CTFd.models import Challenges
 from CTFd.utils import set_config
 from tests.helpers import (

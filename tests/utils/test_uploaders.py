@@ -2,6 +2,7 @@ import os
 from io import BytesIO
 
 import boto3
+
 try:
     from moto import mock_s3
 except ImportError:

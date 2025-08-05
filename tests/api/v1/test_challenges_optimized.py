@@ -13,17 +13,10 @@ Key optimizations:
 import pytest
 from freezegun import freeze_time
 
-from CTFd.models import Challenges, Flags, Hints, Solves, Tags, Users
 from CTFd.utils import set_config
 from tests.helpers import (
     gen_challenge,
-    gen_fail,
-    gen_flag,
-    gen_hint,
     gen_solve,
-    gen_tag,
-    gen_team,
-    gen_topic,
     gen_user,
     login_as_user,
     register_user,

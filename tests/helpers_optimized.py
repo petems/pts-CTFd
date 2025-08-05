@@ -9,19 +9,19 @@ Key improvements:
 """
 
 import functools
-import uuid
 from contextlib import contextmanager
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List
 
 from flask import Flask
 from flask.testing import FlaskClient
 
 from CTFd.models import (
-    Challenges, Users, Teams, Solves, Fails, Awards, Flags, Hints,
-    Files, Tags, Topics, Comments, db
+    Challenges,
+    Solves,
+    Users,
+    db,
 )
 from CTFd.utils import set_config
-
 
 # Cache for frequently used test data
 _test_cache: Dict[str, Any] = {}

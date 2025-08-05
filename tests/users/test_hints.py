@@ -10,7 +10,6 @@ This file replaces the original hints tests with:
 4. Parametrized tests where appropriate
 """
 
-import pytest
 from freezegun import freeze_time
 
 from CTFd.models import Unlocks, Users

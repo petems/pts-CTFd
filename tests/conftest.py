@@ -1,11 +1,12 @@
-import pytest
 import uuid
+
+import pytest
 from sqlalchemy.engine.url import make_url
-from sqlalchemy_utils import drop_database, database_exists
+from sqlalchemy_utils import database_exists, drop_database
 
 from CTFd import create_app
-from CTFd.config import TestingConfig
 from CTFd.cache import cache
+from CTFd.config import TestingConfig
 from CTFd.models import db
 from tests.helpers import CTFdTestClient, setup_ctfd
 
